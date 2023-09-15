@@ -12,11 +12,11 @@ def sign_up_page(driver):
 
 
 @pytest.fixture(scope='function')
-def open_sign_up_window(driver, main_page):
+def open_sign_up_window(driver, sign_up_page):
     """
     Осуществляет переход с главной страницы на окно авторизации
     """
-    main_page.get_main_page_profile_icon().click()
+    sign_up_page.get_main_page_profile_icon().click()
     action = ActionChains(driver)
-    sign_up_button = main_page.element_is_clickable(main_page._main_page_sign_up_button)
+    sign_up_button = sign_up_page.element_is_clickable(sign_up_page._main_page_sign_up_button)
     action.move_to_element(sign_up_button).click().perform()
