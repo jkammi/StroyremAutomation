@@ -26,11 +26,11 @@ class SignUpPage(SeleniumBase):
         self._already_have_account_button = (By.CSS_SELECTOR, ".flex-row .yellow-btn-invert[href=#login-modal]")
         self._registration_button = (By.CSS_SELECTOR, ".yellow-btn[name=register_person]")
         self._error_message = (By.CSS_SELECTOR, ".message_error")
-        self._error_message_missing_name = (By.CSS_SELECTOR, ".registration-tab input[name=name] + div.field-error")
-        self._error_message_missing_surname = (By.CSS_SELECTOR, ".registration-tab input[name=family] + div.field-error")
-        self._error_message_missing_password = (By.CSS_SELECTOR, ".registration-tab input[name=password] + div.field-error")
-        self._error_message_missing_phone = (By.CSS_SELECTOR, ".registration-tab input[name=phone] + div.field-error")
-        self._error_message_missing_email = (By.CSS_SELECTOR, ".registration-tab input[name=email] + div.field-error")
+        self._error_message_wrong_name = (By.CSS_SELECTOR, ".registration-tab input[name=name] + div.field-error")
+        self._error_message_wrong_surname = (By.CSS_SELECTOR, ".registration-tab input[name=family] + div.field-error")
+        self._error_message_wrong_password = (By.CSS_SELECTOR, ".registration-tab input[name=password] + div.field-error")
+        self._error_message_wrong_phone = (By.CSS_SELECTOR, ".registration-tab input[name=phone] + div.field-error")
+        self._error_message_wrong_email = (By.CSS_SELECTOR, ".registration-tab input[name=email] + div.field-error")
         # # элементы регистрации юрлица:
         # ...
         # ...
@@ -85,24 +85,24 @@ class SignUpPage(SeleniumBase):
     def get_error_message(self):
         return self.find_element(self._error_message).text
 
-    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с пустым полем "Имя"')
-    def get_error_message_missing_name(self):
-        return self.find_element(self._error_message_missing_name).text
+    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Имя"')
+    def get_error_message_wrong_name(self):
+        return self.find_element(self._error_message_wrong_name).text
 
-    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с пустым полем "Фамилия"')
-    def get_error_message_missing_surname(self):
-        return self.find_element(self._error_message_missing_surname).text
+    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Фамилия"')
+    def get_error_message_wrong_surname(self):
+        return self.find_element(self._error_message_wrong_surname).text
 
-    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с пустым полем "Пароль"')
-    def get_error_message_missing_password(self):
-        return self.find_element(self._error_message_missing_password).text
+    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Пароль"')
+    def get_error_message_wrong_password(self):
+        return self.find_element(self._error_message_wrong_password).text
 
-    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с пустым полем "Номер телефона"')
-    def get_error_message_missing_phone(self):
-        return self.find_element(self._error_message_missing_phone).text
+    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Номер телефона"')
+    def get_error_message_wrong_phone(self):
+        return self.find_element(self._error_message_wrong_phone).text
 
-    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с пустым полем "Электронная почта"')
-    def get_error_message_missing_email(self):
-        return self.find_element(self._error_message_missing_email).text
+    @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Электронная почта"')
+    def get_error_message_wrong_email(self):
+        return self.find_element(self._error_message_wrong_email).text
 
 
