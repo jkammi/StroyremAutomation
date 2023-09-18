@@ -139,5 +139,5 @@ class TestSignUp:
 
         sign_up_page.get_email_field().clear()
         sleep(1)
-        # TODO: Postcondition (if test failed): delete created user / log out if account created
+        # TODO: Postcondition (if test failed and account created): log out and delete created user
 
