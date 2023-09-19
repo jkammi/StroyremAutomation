@@ -2,7 +2,10 @@ from time import sleep
 
 import allure
 import pytest
+from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
+
+from data import credentials_admin
 
 
 @allure.epic("Sign Up Physical User")
@@ -10,9 +13,7 @@ class TestSignUp:
 
     @allure.title("Регистрация нового пользователя (физическое лицо)")
     @pytest.mark.smoke_test
-    def test_positive_registration_of_new_physical_user_smoke(self, driver, sign_up_page):
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
+    def test_positive_registration_of_new_physical_user_smoke(self, driver, sign_up_page, open_sign_up_window):
         sign_up_page.get_name_field().send_keys("Ivan")
         sign_up_page.get_surname_field().send_keys("Петров")
         sign_up_page.get_password_field().send_keys("rhfbgvu@@11")
@@ -39,10 +40,8 @@ class TestSignUp:
 
     @allure.title("Отправка формы на регистрацию уже зарегистрированного пользователя (физическое лицо)")
     @pytest.mark.regression_test
-    def test_negative_registration_of_existed_physical_user_regress(self, driver, sign_up_page):
+    def test_negative_registration_of_existed_physical_user_regress(self, driver, sign_up_page, open_sign_up_window):
         # TODO: Precondition: create user
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
         sign_up_page.get_name_field().send_keys("Ivan")
         sign_up_page.get_surname_field().send_keys("Петров")
         sign_up_page.get_password_field().send_keys("rhfbgvu@@11")
@@ -60,9 +59,7 @@ class TestSignUp:
     @allure.title("Регистрация нового пользователя (физическое лицо) с пустыми полями")
     @pytest.mark.xfail(reason="Текст ошибок выводится, но не в том месте: https://trello.com/c/yujXCdJJ")
     @pytest.mark.regression_test
-    def test_negative_registration_of_physical_user_with_all_fields_empty_regress(self, driver, sign_up_page):
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
+    def test_negative_registration_of_physical_user_with_all_fields_empty_regress(self, driver, sign_up_page, open_sign_up_window):
         sign_up_page.get_registration_button().click()
         error_message1 = sign_up_page.get_error_message_wrong_name()
         error_message2 = sign_up_page.get_error_message_wrong_surname()
@@ -75,9 +72,7 @@ class TestSignUp:
     @allure.title('Регистрация нового пользователя (физ лицо) без проставления галочки в чек-боксе "Я согласен на обработку моих персональных данных"')
     @pytest.mark.xfail(reason="https://trello.com/c/2P5BbbsW")
     @pytest.mark.regression_test
-    def test_negative_registration_of_physical_user_with_checkbox_off_regress(self, driver, sign_up_page):
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
+    def test_negative_registration_of_physical_user_with_checkbox_off_regress(self, driver, sign_up_page, open_sign_up_window):
         sign_up_page.get_name_field().send_keys("Ivan")
         sign_up_page.get_surname_field().send_keys("Петров")
         sign_up_page.get_password_field().send_keys("rhfbgvu@@11")
@@ -91,9 +86,7 @@ class TestSignUp:
     @allure.title('Регистрация нового пользователя (физ лицо) с вводом невалидных данных в поле "Пароль"')
     @pytest.mark.xfail(reason="https://trello.com/c/0BuspDgA, https://trello.com/c/oYa4lR9a")
     @pytest.mark.regression_test
-    def test_negative_registration_of_physical_user_with_invalid_input_in_password_regress(self, driver, sign_up_page):
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
+    def test_negative_registration_of_physical_user_with_invalid_input_in_password_regress(self, driver, sign_up_page, open_sign_up_window):
         sign_up_page.get_name_field().send_keys("Ivan")
         sign_up_page.get_surname_field().send_keys("Петров")
         sign_up_page.get_phone_field().send_keys("9889990999")
@@ -121,10 +114,9 @@ class TestSignUp:
         "ivenovtesttt@gmailcom",
         "ivanovtest@gmail."
     ])
-    def test_negative_registration_of_physical_user_invalid_input_in_mail_regress(self, driver, sign_up_page, invalid_email):
+    def test_negative_registration_of_physical_user_invalid_input_in_mail_regress(self, driver, sign_up_page, open_sign_up_window, invalid_email):
         expected_error_message = "Укажите верный email адрес"
-        sign_up_page.get_main_page_profile_icon().click()
-        sign_up_page.get_main_page_sign_up_button().click()
+
         sign_up_page.get_name_field().send_keys("TEST_NAME")
         sign_up_page.get_surname_field().send_keys("Петров")
         sign_up_page.get_password_field().send_keys("rhfbgvu@@11")
@@ -140,4 +132,52 @@ class TestSignUp:
         sign_up_page.get_email_field().clear()
         sleep(1)
         # TODO: Postcondition (if test failed and account created): log out and delete created user
+
+
+    def test_delete(self, driver, admin_page):
+        admin_page.get_admin_page_search_field().send_keys("test10072023 test10072023")
+        admin_page.get_admin_page_search_submit_button().click()
+        sleep(1)
+        try:
+            # Find all elements that match the selector
+            checkboxes = driver.find_elements(By.CSS_SELECTOR, '.checkbox [type="checkbox"]')
+
+            # Click the first checkbox if it exists
+            if checkboxes:
+                checkboxes[0].click()
+            else:
+                pytest.fail("No checkboxes found matching the selector")
+        except Exception as e:
+            pytest.fail(f"Failed to click the checkbox: {e}")
+        assert checkboxes[0].is_selected()
+
+        # DELETING:
+        sleep(1)
+        admin_page.get_admin_page_open_drop_down().click()
+        admin_page.get_admin_page_drop_down_delete_option().click()
+        admin_page.get_admin_page_apply_button().click()
+        sleep(1)
+
+        # Switch to the confirmation dialog
+        alert = Alert(driver)
+
+        # Accept the confirmation (clicking the "OK" button)
+        alert.accept()
+        sleep(1)
+
+    def test_positive_registration_of_new_physical_user_smoke(self, driver, sign_up_page, open_sign_up_window, user_management):
+        user_management()
+        sign_up_page.get_personal_data_agreement_checkbox().click()
+        sign_up_page.get_registration_button().click()
+        sleep(1)
+        text = driver.find_element(By.CSS_SELECTOR, ".personal-h1").text
+        assert text == "Личный кабинет"
+        name = "Ivan"
+        actual_name =  driver.find_element(By.CSS_SELECTOR, ".personal-content .personal-left .user-name").text
+        assert name == actual_name
+        sleep(5)
+
+
+
+
 
