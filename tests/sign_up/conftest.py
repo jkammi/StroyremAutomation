@@ -1,6 +1,6 @@
 import pytest
 from selenium.webdriver.common.alert import Alert
-from data import credentials_admin
+from data.credentials_admin import credentials_admin
 
 from constants import *
 from selenium.webdriver.common.action_chains import ActionChains
@@ -13,7 +13,7 @@ from faker import Faker
 @pytest.fixture(scope='function')
 def sign_up_page(driver):
     sign_up_page = SignUpPage(driver)
-    driver.get(MAIN_PAGE_PROD_URL)
+    driver.get("URL")
     return sign_up_page
 
 @pytest.fixture(scope='function')
@@ -34,16 +34,48 @@ def open_sign_up_window(driver, sign_up_page):
     sign_up_button = sign_up_page.element_is_clickable(sign_up_page._main_page_sign_up_button)
     action.move_to_element(sign_up_button).click().perform()
 
-def create_user(name, surname, password, phone, email, club_card_number):
+@pytest.fixture(scope='function')
+def name():
+    fake = Faker('ru_RU')
+    return fake.first_name()
+
+@pytest.fixture(scope='function')
+def surname():
+    fake = Faker('ru_RU')
+    return fake.last_name()
+
+@pytest.fixture(scope='function')
+def password():
+    fake = Faker('ru_RU')
+    return fake.password()
+
+# @pytest.fixture(scope='function')
+# def club_card_number():
+#     fake = Faker('ru_RU')
+#     return str(fake.random_int(min=100000000000, max=999999999999))
+
+@pytest.fixture(scope='function')
+def email():
+    fake = Faker('ru_RU')
+    return fake.email()
+
+@pytest.fixture(scope='function')
+def phone():
+    fake = Faker('ru_RU')
+    phone_number = '9' + str(fake.random_int(min=100000000, max=999999999))
+    return phone_number
+
+def create_user(name, surname, password, email, phone, sign_up_page):
     sign_up_page.get_name_field().send_keys(name)
     sign_up_page.get_surname_field().send_keys(surname)
     sign_up_page.get_password_field().send_keys(password)
     sign_up_page.get_phone_field().send_keys(phone)
     sign_up_page.get_email_field().send_keys(email)
-    sign_up_page.get_club_card_number_field().send_keys(club_card_number)
+    # sign_up_page.get_club_card_number_field().send_keys(club_card_number)
 
-def delete_user(driver, name_surname):
-    admin_page.get_admin_page_search_field().send_keys(name_surname)
+def delete_user(driver, name, surname):
+    keyword = name + " " + surname
+    admin_page.get_admin_page_search_field().send_keys(keyword)
     admin_page.get_admin_page_search_submit_button().click()
     try:
         # Find all elements that match the selector
@@ -65,30 +97,14 @@ def delete_user(driver, name_surname):
 
     # Switch to the confirmation dialog
     alert = Alert(driver)
-
     # Accept the confirmation (clicking the "OK" button)
     alert.accept()
 
 @pytest.fixture(scope='function')
-def user_management(driver):
-    fake = Faker('ru_RU')  # Create a Faker instance for Russian data
+def user_management(driver, name, surname, password, email, phone, sign_up_page, admin_page):
+    create_user(name, surname, password, email, phone, sign_up_page)
 
-    user_data = {
-        "name": fake.first_name(),
-        "surname": fake.last_name(),
-        "email": fake.email(),
-        "phone": '9' + str(fake.random_int(min=100000000, max=999999999)),
-        "password": fake.password(),
-        "club_card_number": str(fake.random_int(min=100000000000, max=999999999999))
-    }
+    yield
 
-    name_surname = user_data["name" + " " + "surname"]  # Unique identifier of user
-
-    # Create a user
-    create_user(user_data["password"], user_data["name"], user_data["surname"],
-                user_data["email"], user_data["phone"], user_data["club_card_number"])
-
-    # yield user_data
-    #
-    # # Delete the user after the test
-    # delete_user(name_surname)
+    # Delete the user after the test
+    delete_user(driver, name, surname, admin_page)

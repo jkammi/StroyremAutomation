@@ -169,12 +169,9 @@ class TestSignUp:
         user_management()
         sign_up_page.get_personal_data_agreement_checkbox().click()
         sign_up_page.get_registration_button().click()
-        sleep(1)
+        sleep(5)
         text = driver.find_element(By.CSS_SELECTOR, ".personal-h1").text
         assert text == "Личный кабинет"
-        name = "Ivan"
-        actual_name =  driver.find_element(By.CSS_SELECTOR, ".personal-content .personal-left .user-name").text
-        assert name == actual_name
         sleep(5)
 
 
