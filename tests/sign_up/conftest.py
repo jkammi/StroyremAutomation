@@ -34,6 +34,15 @@ def open_sign_up_window(driver, sign_up_page):
     sign_up_button = sign_up_page.element_is_clickable(sign_up_page._main_page_sign_up_button)
     action.move_to_element(sign_up_button).click().perform()
 
+
+# fake = Faker('ru_RU')
+# name = fake.first_name()
+# surname = fake.last_name()
+# password = fake.password()
+# club_card_number = str(fake.random_int(min=100000000000, max=999999999999))
+# email = fake.email()
+# phone = '9' + str(fake.random_int(min=100000000, max=999999999))
+
 @pytest.fixture(scope='function')
 def name():
     fake = Faker('ru_RU')
@@ -66,8 +75,8 @@ def phone():
     return phone_number
 
 def create_user(name, surname, password, email, phone, sign_up_page):
-    username = name
-    sign_up_page.get_name_field().send_keys(username)
+    sign_up_page.get_name_field().send_keys(name)
+    sleep(10)
     sign_up_page.get_surname_field().send_keys(surname)
     sign_up_page.get_password_field().send_keys(password)
     sign_up_page.get_phone_field().send_keys(phone)
@@ -104,7 +113,6 @@ def delete_user(driver, name, surname):
 @pytest.fixture(scope='function')
 def user_management(driver, name, surname, password, email, phone, sign_up_page, admin_page):
     create_user(name, surname, password, email, phone, sign_up_page)
-    sleep(10)
 
     yield
 

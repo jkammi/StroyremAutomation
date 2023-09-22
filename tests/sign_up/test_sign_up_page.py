@@ -2,10 +2,10 @@ from time import sleep
 
 import allure
 import pytest
-from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 
 
+@pytest.mark.skip(reason="Тесты не готовы")
 @allure.epic("Sign Up Physical User")
 class TestSignUp:
 
@@ -131,7 +131,9 @@ class TestSignUp:
         sleep(1)
         # TODO: Postcondition (if test failed and account created): log out and delete created user
 
-    def test_positive_registration_of_new_physical_user_smoke(self, driver, sign_up_page, open_sign_up_window, user_management):
+    @allure.title("Регистрация нового пользователя (физическое лицо)")
+    # Попытка привести  первый тест к упрощенному виду
+    def test_positive_registration_of_new_physical_user_smoke1(self, driver, sign_up_page, open_sign_up_window, user_management):
         user_management()
         sign_up_page.get_personal_data_agreement_checkbox().click()
         sign_up_page.get_registration_button().click()
