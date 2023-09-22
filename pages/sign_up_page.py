@@ -39,70 +39,70 @@ class SignUpPage(SeleniumBase):
 
     @allure.step("Нахождение элемента: кнопка 'Регистрация' в хедере")
     def get_main_page_sign_up_button(self):
-        return self.find_element(self._main_page_sign_up_button)
+        return self.element_is_visible(self._main_page_sign_up_button)
 
     @allure.step("Нахождение элемента: иконка профиля в хедере")
     def get_main_page_profile_icon(self):
-        return self.find_element(self._main_page_profile_icon)
+        return self.element_is_visible(self._main_page_profile_icon)
 
     @allure.step("Нахождение элемента: поле 'Имя' окна регистрации Физического лица")
     def get_name_field(self):
-        return self.find_element(self._name_field)
+        return self.element_is_visible(self._name_field)
 
     @allure.step("Нахождение элемента: поле 'Фамилия' окна регистрации Физического лица")
     def get_surname_field(self):
-        return self.find_element(self._surname_field)
+        return self.element_is_visible(self._surname_field)
 
     @allure.step("Нахождение элемента: поле 'Пароль' окна регистрации Физического лица")
     def get_password_field(self):
-        return self.find_element(self._password_field)
+        return self.element_is_visible(self._password_field)
 
     @allure.step("Нахождение элемента: поле 'Номер телефона' окна регистрации Физического лица")
     def get_phone_field(self):
-        return self.find_element(self._phone_field)
+        return self.element_is_visible(self._phone_field)
 
     @allure.step("Нахождение элемента: поле 'Электронная почта' окна регистрации Физического лица")
     def get_email_field(self):
-        return self.find_element(self._email_field)
+        return self.element_is_visible(self._email_field)
 
     @allure.step("Нахождение элемента: поле 'Номер клубной карты' окна регистрации Физического лица")
     def get_club_card_number_field(self):
-        return self.find_element(self._club_card_number_field)
+        return self.element_is_visible(self._club_card_number_field)
 
     @allure.step("Нахождение элемента: чекбокс 'Я согласен на обработку моих персональных данных' окна регистрации Физического лица")
     def get_personal_data_agreement_checkbox(self):
-        return self.find_element(self._personal_data_agreement_checkbox)
+        return self.element_is_visible(self._personal_data_agreement_checkbox)
 
     @allure.step("Нахождение элемента: кнопка 'Уже есть аккаунт' окна регистрации Физического лица")
     def get_already_have_account_button(self):
-        return self.find_element(self._already_have_account_button)
+        return self.element_is_visible(self._already_have_account_button)
 
     @allure.step("Нахождение элемента: кнопка 'Зарегистрироваться' окна регистрации Физического лица")
     def get_registration_button(self):
-        return self.find_element(self._registration_button)
+        return self.element_is_visible(self._registration_button)
 
     @allure.step("Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться через окно регистрации Физического лица")
     def get_error_message(self):
-        return self.find_element(self._error_message).text
+        return self.element_is_visible(self._error_message).text
 
     @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Имя"')
     def get_error_message_wrong_name(self):
-        return self.find_element(self._error_message_wrong_name).text
+        return self.element_is_visible(self._error_message_wrong_name).text
 
     @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Фамилия"')
     def get_error_message_wrong_surname(self):
-        return self.find_element(self._error_message_wrong_surname).text
+        return self.element_is_visible(self._error_message_wrong_surname).text
 
     @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Пароль"')
     def get_error_message_wrong_password(self):
-        return self.find_element(self._error_message_wrong_password).text
+        return self.element_is_visible(self._error_message_wrong_password).text
 
     @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Номер телефона"')
     def get_error_message_wrong_phone(self):
-        return self.find_element(self._error_message_wrong_phone).text
+        return self.element_is_visible(self._error_message_wrong_phone).text
 
     @allure.step('Нахождение элемента: Получение текста об ошибке при попытке зарегистрироваться с невалидным полем "Электронная почта"')
     def get_error_message_wrong_email(self):
-        return self.find_element(self._error_message_wrong_email).text
+        return self.element_is_visible(self._error_message_wrong_email).text
 
 

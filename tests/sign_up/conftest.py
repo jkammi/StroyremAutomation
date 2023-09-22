@@ -1,19 +1,19 @@
+from time import sleep
+
 import pytest
-from selenium.webdriver.common.alert import Alert
-from data.credentials_admin import credentials_admin
-
-from constants import *
-from selenium.webdriver.common.action_chains import ActionChains
-
-from pages.users_admin_page import UsersAdminPage
-from pages.sign_up_page import SignUpPage
 from faker import Faker
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.alert import Alert
+
+from data.credentials_admin import credentials_admin
+from pages.sign_up_page import SignUpPage
+from pages.users_admin_page import UsersAdminPage
 
 
 @pytest.fixture(scope='function')
 def sign_up_page(driver):
     sign_up_page = SignUpPage(driver)
-    driver.get("URL")
+    driver.get(credentials_admin['url_test2'])
     return sign_up_page
 
 @pytest.fixture(scope='function')
@@ -49,10 +49,10 @@ def password():
     fake = Faker('ru_RU')
     return fake.password()
 
-# @pytest.fixture(scope='function')
-# def club_card_number():
-#     fake = Faker('ru_RU')
-#     return str(fake.random_int(min=100000000000, max=999999999999))
+@pytest.fixture(scope='function')
+def club_card_number():
+    fake = Faker('ru_RU')
+    return str(fake.random_int(min=100000000000, max=999999999999))
 
 @pytest.fixture(scope='function')
 def email():
@@ -66,7 +66,8 @@ def phone():
     return phone_number
 
 def create_user(name, surname, password, email, phone, sign_up_page):
-    sign_up_page.get_name_field().send_keys(name)
+    username = name
+    sign_up_page.get_name_field().send_keys(username)
     sign_up_page.get_surname_field().send_keys(surname)
     sign_up_page.get_password_field().send_keys(password)
     sign_up_page.get_phone_field().send_keys(phone)
@@ -103,8 +104,8 @@ def delete_user(driver, name, surname):
 @pytest.fixture(scope='function')
 def user_management(driver, name, surname, password, email, phone, sign_up_page, admin_page):
     create_user(name, surname, password, email, phone, sign_up_page)
+    sleep(10)
 
     yield
 
-    # Delete the user after the test
     delete_user(driver, name, surname, admin_page)

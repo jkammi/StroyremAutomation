@@ -5,8 +5,6 @@ import pytest
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 
-from data import credentials_admin
-
 
 @allure.epic("Sign Up Physical User")
 class TestSignUp:
@@ -132,38 +130,6 @@ class TestSignUp:
         sign_up_page.get_email_field().clear()
         sleep(1)
         # TODO: Postcondition (if test failed and account created): log out and delete created user
-
-
-    def test_delete(self, driver, admin_page):
-        admin_page.get_admin_page_search_field().send_keys("test10072023 test10072023")
-        admin_page.get_admin_page_search_submit_button().click()
-        sleep(1)
-        try:
-            # Find all elements that match the selector
-            checkboxes = driver.find_elements(By.CSS_SELECTOR, '.checkbox [type="checkbox"]')
-
-            # Click the first checkbox if it exists
-            if checkboxes:
-                checkboxes[0].click()
-            else:
-                pytest.fail("No checkboxes found matching the selector")
-        except Exception as e:
-            pytest.fail(f"Failed to click the checkbox: {e}")
-        assert checkboxes[0].is_selected()
-
-        # DELETING:
-        sleep(1)
-        admin_page.get_admin_page_open_drop_down().click()
-        admin_page.get_admin_page_drop_down_delete_option().click()
-        admin_page.get_admin_page_apply_button().click()
-        sleep(1)
-
-        # Switch to the confirmation dialog
-        alert = Alert(driver)
-
-        # Accept the confirmation (clicking the "OK" button)
-        alert.accept()
-        sleep(1)
 
     def test_positive_registration_of_new_physical_user_smoke(self, driver, sign_up_page, open_sign_up_window, user_management):
         user_management()
